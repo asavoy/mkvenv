@@ -7,9 +7,9 @@ function mkvenv() {
   local version="$1"
   local venvdir=".venv"
 
-  hash pyenv 2>/dev/null || { echo "pyenv not found"; return 1 }
-  hash virtualenv 2>/dev/null || { echo "virtualenv not found"; return 1 }
-  hash direnv 2>/dev/null || { echo "direnv not found"; return 1 }
+  hash pyenv 2>/dev/null || { echo "pyenv not found"; return 1; }
+  hash virtualenv 2>/dev/null || { echo "virtualenv not found"; return 1; }
+  hash direnv 2>/dev/null || { echo "direnv not found"; return 1; }
 
   if [[ -f .python-version && $(cat .python-version) != $version ]]; then
     echo "$version does not match .python-version"

@@ -1,6 +1,6 @@
 # mkvenv
 
-Bash function for creating Python virtualenvs.
+Conveniently setup & use Python virtualenvs.
 
 ## Why
 

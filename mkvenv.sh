@@ -23,6 +23,7 @@ function mkvenv() {
   pyenv local "$version" \
     && virtualenv --python "$(pyenv which python)" "$venvdir" \
     && echo "source \"$venvdir/bin/activate\"" >> .envrc \
+    && echo "unset PS1" >> .envrc \
     && direnv allow
 }
 

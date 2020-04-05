@@ -47,9 +47,9 @@ function mkvenv() {
 
   virtualenv --python "$(pyenv which python)" "$venvdir" || return 1
 
+  touch .envrc
   sed -i '' '/^source ".*bin\/activate"$/d' .envrc \
     && echo "source \"$venvdir/bin/activate\"" >> .envrc
-
   sed -i '' '/^unset PS1$/d' .envrc \
     && echo "unset PS1" >> .envrc
 

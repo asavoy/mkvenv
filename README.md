@@ -1,48 +1,47 @@
 # mkvenv
 
-Conveniently setup & use Python virtualenvs.
+**Conveniently setup & use Python virtual environments.**
 
-## Why
+Use it because:
 
-- It's easy to start a Python project with a specific Python version
-- It's tidy to keep your dependencies local and isolated to your project repo
-- It's less hassle to activate the Python virtualenv by just `cd`'ing into the project repo
+- you can work with different Python versions per project
+- the Python environment is activated as soon as you `cd` into the project dir
+- the virtual environment is kept tidily in the project dir, `node_modules`-style
+
 
 ## Usage
 
 ```bash
-mkdir ~/Projects/my-python-project
-
-cd ~/Projects/my-python-project
-
-mkvenv 3.7.1
-# Running virtualenv with interpreter /Users/alvin/.pyenv/versions/3.7.1/bin/python
-# Using base prefix '/Users/alvin/.pyenv/versions/3.7.1'
-# New python executable in /Users/alvin/Projects/my-python-project/.venv/bin/python
-# Installing setuptools, pip, wheel...
-# done.
-# direnv: loading .envrc
-# direnv: export +VIRTUAL_ENV ~PATH
-
-which python
-# /Users/alvin/Projects/my-python-project/.venv/bin/python
-
-python --version
-# Python 3.7.1
+mkvenv [--force] [--path VENV_PATH] [PYTHON_VERSION]
 ```
+
+- `--force` will (re)build even if the virtual environment already exists
+- `--path` to choose a different path for the virtual environment
+- `PYTHON_VERSION` to specify the Python version, else will look in the file `.python-version` 
+
+For example, to create a Python virtual environment in `.venv/` of the current dir: 
+
+```bash
+$ mkvenv 3.8.1
+```
+
 
 ## Dependencies
 
-- direnv
-- pyenv
-- virtualenv
+- macOS
+- bash or zsh as your shell
+- `brew install direnv`
+- `brew install pyenv`
+- `pip install virtualenv` in your default Python environment
+
 
 ## Setup
 
-1. Install dependencies
+1. Ensure you have these dependencies above
 
 2. Clone this repo
 
 3. Add `source /path/to/mkvenv.sh` to `.profile`
 
 4. Add `.venv` to your global `.gitignore`
+

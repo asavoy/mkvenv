@@ -4,6 +4,11 @@ function mkvenv() {
     return 1
   fi
   
+  local cyan='\033[0;36m'
+  local red='\033[0;31m'
+  local nocolor='\033[0m'
+  local grey='\033[0;90m'
+
   local force=""
   local venvdir=".venv"
   local version=""
@@ -23,14 +28,14 @@ function mkvenv() {
       ;;
   esac; shift; done
   
-  hash pyenv 2>/dev/null || { echo "pyenv not found"; return 1; }
-  hash virtualenv 2>/dev/null || { echo "virtualenv not found"; return 1; }
-  hash direnv 2>/dev/null || { echo "direnv not found"; return 1; }
+  hash pyenv 2>/dev/null || { echo -e "${red}pyenv not found; try 'brew install pyenv'${nocolor}"; return 1; }
+  hash virtualenv 2>/dev/null || { echo -e "${red}virtualenv not found; try 'pip install virtualenv'${nocolor}"; return 1; }
+  hash direnv 2>/dev/null || { echo -e "${red}direnv not found; try 'brew install direnv'${nocolor}"; return 1; }
 
   if [[ -f .python-version ]]; then
     local existing="$(cat .python-version)"
     if [[ -z "$force" && "$existing" != "$version" ]]; then
-      echo "$version does not match .python-version ($existing)"
+      echo -e "${red}${version} does not match .python-version (${existing})${nocolor}"
       return 1
     fi
   fi
@@ -38,14 +43,16 @@ function mkvenv() {
 
   if [[ -d "$venvdir" ]]; then
     if [[ -z "$force" ]]; then
-      echo "$venvdir already exists!"
+      echo -e "${red}${venvdir} already exists! use -f to overwrite it${nocolor}"
       return 1
-    elif [[ -n "$venvdir" && "$venvdir" != "/" ]]; then
+    elif [[ -n "$venvdir" && "$venvdir" != "/" && "$venvdir" != "" ]]; then
       rm -r "$venvdir"
     fi
   fi
 
+  printf "$grey"
   virtualenv --python "$(pyenv which python)" "$venvdir" || return 1
+  printf "$nocolor"
 
   touch .envrc
   sed -i '' '/^source ".*bin\/activate"$/d' .envrc \
@@ -54,5 +61,7 @@ function mkvenv() {
     && echo "unset PS1" >> .envrc
 
   direnv allow
+
+  echo -e "${cyan}Created Python virtual environment in $(cd "$venvdir" 2> /dev/null ; pwd) ${nocolor}"
 }
 

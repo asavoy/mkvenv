@@ -32,7 +32,6 @@ $ mkvenv 3.8.1
 - bash or zsh as your shell
 - `brew install direnv`
 - `brew install pyenv`
-- `pip install virtualenv` in your default Python environment
 
 
 ## Setup

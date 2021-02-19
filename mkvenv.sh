@@ -51,7 +51,7 @@ function mkvenv() {
   fi
 
   printf "$grey"
-  virtualenv --python "$(pyenv which python)" "$venvdir" || return 1
+  python -m venv "$venvdir" || return 1
   printf "$nocolor"
 
   touch .envrc

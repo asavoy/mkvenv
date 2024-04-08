@@ -34,7 +34,6 @@ function mkvenv() {
   esac; shift; done
   
   hash pyenv 2>/dev/null || { echo -e "${red}pyenv not found; try 'brew install pyenv'${nocolor}"; return 1; }
-  hash virtualenv 2>/dev/null || { echo -e "${red}virtualenv not found; try 'pip install virtualenv'${nocolor}"; return 1; }
   hash direnv 2>/dev/null || { echo -e "${red}direnv not found; try 'brew install direnv'${nocolor}"; return 1; }
 
   if [[ -f .python-version ]]; then
@@ -56,7 +55,7 @@ function mkvenv() {
   fi
 
   printf "$grey"
-  virtualenv --python "$(pyenv which python)" "$venvdir" || return 1
+  pyenv exec python -m venv "$venvdir" || return 1
   printf "$nocolor"
 
   touch .envrc
@@ -69,4 +68,3 @@ function mkvenv() {
 
   echo -e "${cyan}Created Python virtual environment in $(cd "$venvdir" 2> /dev/null ; pwd) ${nocolor}"
 }
-

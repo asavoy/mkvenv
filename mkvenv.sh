@@ -1,14 +1,19 @@
 function mkvenv() {
-  if [[ -z "$1" ]]; then
-    echo "usage: mkvenv [--force] [--path VENV_PATH] [PYTHON_VERSION]"
-    return 1
-  fi
-  
   local cyan='\033[0;36m'
   local red='\033[0;31m'
   local nocolor='\033[0m'
   local grey='\033[0;90m'
 
+  if [[ -z "$1" || "$1" == "--help" || "$1" == "-h" ]]; then
+    echo -e "${cyan}mkvenv: Conveniently setup & use Python virtual environments${nocolor}"
+    echo -e "" 
+    echo -e "Usage: mkvenv PYTHON_VERSION [--force] [--path VENV_PATH]"
+    echo -e "" 
+    echo -e "Available Python versions:"
+    pyenv versions --bare 
+    return 1
+  fi
+  
   local force=""
   local venvdir=".venv"
   local version=""

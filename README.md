@@ -31,8 +31,9 @@ It will:
 
 - `uv init --python PYTHON_VERSION` to initialise the project
 - `uv venv --python PYTHON_VERSION` to create the virtual environment
-- write a `.envrc` so [direnv](https://direnv.net) activates the venv whenever
-  you `cd` into the project
+- create an empty `.env` file
+- write a `.envrc` so [direnv](https://direnv.net) activates the venv and loads
+  `.env` (via `dotenv`) whenever you `cd` into the project
 
 
 ## Dependencies

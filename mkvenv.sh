@@ -58,11 +58,15 @@ function mkvenv() {
   uv venv --python "$version" "$venvdir" || { printf "$nocolor"; return 1; }
   printf "$nocolor"
 
+  touch .env
+
   touch .envrc
   sed -i '' '/^source ".*bin\/activate"$/d' .envrc \
     && echo "source \"$venvdir/bin/activate\"" >> .envrc
   sed -i '' '/^unset PS1$/d' .envrc \
     && echo "unset PS1" >> .envrc
+  sed -i '' '/^dotenv$/d' .envrc \
+    && echo "dotenv" >> .envrc
 
   direnv allow
 

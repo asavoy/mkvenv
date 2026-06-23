@@ -6,20 +6,20 @@ function mkvenv() {
 
   if [[ -z "$1" || "$1" == "--help" || "$1" == "-h" ]]; then
     echo -e "${cyan}mkvenv: Conveniently setup & use Python virtual environments${nocolor}"
-    echo -e "" 
+    echo -e ""
     echo -e "Usage: mkvenv PYTHON_VERSION [--force] [--path VENV_PATH]"
-    echo -e "" 
+    echo -e ""
+    echo -e "  --force     (re)build even if the virtual environment already exists"
+    echo -e "  --path      choose a different path for the virtual environment (default: .venv)"
+    echo -e ""
     echo -e "Available Python versions:"
-    pyenv versions --bare 
+    uv python list
     return 1
   fi
-  
+
   local force=""
   local venvdir=".venv"
   local version=""
-  if [[ -f .python-version ]]; then
-    version="$(cat .python-version)"
-  fi
 
   while [[ -n "$1" ]]; do case $1 in
     -p | --path )
@@ -32,18 +32,9 @@ function mkvenv() {
       version="$1"
       ;;
   esac; shift; done
-  
-  hash pyenv 2>/dev/null || { echo -e "${red}pyenv not found; try 'brew install pyenv'${nocolor}"; return 1; }
-  hash direnv 2>/dev/null || { echo -e "${red}direnv not found; try 'brew install direnv'${nocolor}"; return 1; }
 
-  if [[ -f .python-version ]]; then
-    local existing="$(cat .python-version)"
-    if [[ -z "$force" && "$existing" != "$version" ]]; then
-      echo -e "${red}${version} does not match .python-version (${existing})${nocolor}"
-      return 1
-    fi
-  fi
-  pyenv local "$version" || return 1
+  hash uv 2>/dev/null || { echo -e "${red}uv not found; try 'brew install uv'${nocolor}"; return 1; }
+  hash direnv 2>/dev/null || { echo -e "${red}direnv not found; try 'brew install direnv'${nocolor}"; return 1; }
 
   if [[ -d "$venvdir" ]]; then
     if [[ -z "$force" ]]; then
@@ -55,7 +46,10 @@ function mkvenv() {
   fi
 
   printf "$grey"
-  pyenv exec python -m venv "$venvdir" || return 1
+  if [[ ! -f pyproject.toml ]]; then
+    uv init --python "$version" || { printf "$nocolor"; return 1; }
+  fi
+  uv venv --python "$version" "$venvdir" || { printf "$nocolor"; return 1; }
   printf "$nocolor"
 
   touch .envrc

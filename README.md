@@ -12,18 +12,25 @@ Use it because:
 ## Usage
 
 ```bash
-mkvenv [--force] [--path VENV_PATH] [PYTHON_VERSION]
+mkvenv PYTHON_VERSION [--force] [--path VENV_PATH]
 ```
 
+- `PYTHON_VERSION` to specify the Python version (uv will download it if needed)
 - `--force` will (re)build even if the virtual environment already exists
-- `--path` to choose a different path for the virtual environment
-- `PYTHON_VERSION` to specify the Python version, else will look in the file `.python-version` 
+- `--path` to choose a different path for the virtual environment (default: `.venv`)
 
-For example, to create a Python virtual environment in `.venv/` of the current dir: 
+For example, to create a Python virtual environment in `.venv/` of the current dir:
 
 ```bash
-$ mkvenv 3.8.1
+$ mkvenv 3.12
 ```
+
+It will:
+
+- `uv init --python PYTHON_VERSION` to initialise the project
+- `uv venv --python PYTHON_VERSION` to create the virtual environment
+- write a `.envrc` so [direnv](https://direnv.net) activates the venv whenever
+  you `cd` into the project
 
 
 ## Dependencies
@@ -31,8 +38,7 @@ $ mkvenv 3.8.1
 - macOS
 - bash or zsh as your shell
 - `brew install direnv`
-- `brew install pyenv`
-- `pip install virtualenv` in your default Python environment
+- `brew install uv`
 
 
 ## Setup
@@ -44,4 +50,3 @@ $ mkvenv 3.8.1
 3. Add `source /path/to/mkvenv.sh` to `.profile`
 
 4. Add `.venv` to your global `.gitignore`
-

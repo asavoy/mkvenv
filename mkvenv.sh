@@ -7,8 +7,10 @@ function mkvenv() {
   if [[ -z "$1" || "$1" == "--help" || "$1" == "-h" ]]; then
     echo -e "${cyan}mkvenv: Conveniently setup & use Python virtual environments${nocolor}"
     echo -e ""
-    echo -e "Usage: mkvenv PYTHON_VERSION [--force] [--path VENV_PATH]"
+    echo -e "Usage: mkvenv PYTHON_VERSION [--app|--lib] [--force] [--path VENV_PATH]"
     echo -e ""
+    echo -e "  --app       passed to 'uv init' to create a packaged application (uv's default)"
+    echo -e "  --lib       passed to 'uv init' to create a library"
     echo -e "  --force     (re)build even if the virtual environment already exists"
     echo -e "  --path      choose a different path for the virtual environment (default: .venv)"
     echo -e ""
@@ -20,6 +22,7 @@ function mkvenv() {
   local force=""
   local venvdir=".venv"
   local version=""
+  local init_kind=""
 
   while [[ -n "$1" ]]; do case $1 in
     -p | --path )
@@ -27,6 +30,9 @@ function mkvenv() {
       ;;
     -f | --force )
       force=1
+      ;;
+    --app | --lib )
+      init_kind="$1"
       ;;
     *)
       version="$1"
@@ -47,7 +53,7 @@ function mkvenv() {
 
   printf "$grey"
   if [[ ! -f pyproject.toml ]]; then
-    uv init --python "$version" || { printf "$nocolor"; return 1; }
+    uv init --python "$version" $init_kind || { printf "$nocolor"; return 1; }
   fi
   uv venv --python "$version" "$venvdir" || { printf "$nocolor"; return 1; }
   printf "$nocolor"

@@ -12,10 +12,12 @@ Use it because:
 ## Usage
 
 ```bash
-mkvenv PYTHON_VERSION [--force] [--path VENV_PATH]
+mkvenv PYTHON_VERSION [--app|--lib] [--force] [--path VENV_PATH]
 ```
 
 - `PYTHON_VERSION` to specify the Python version (uv will download it if needed)
+- `--app`, `--lib` are passed through to `uv init` to choose the project kind
+  (application or library; `--app` is uv's default)
 - `--force` will (re)build even if the virtual environment already exists
 - `--path` to choose a different path for the virtual environment (default: `.venv`)
 
